@@ -69,3 +69,21 @@ export const statusTransaction = Object.freeze({
   DONE: 'DONE',
   UNAUTHORIZED: 'UNAUTHORIZED'
 })
+
+export const integrationModes = Object.freeze({
+  LOCALHOST: 'localhost',
+  GATEWAY: 'gateway'
+})
+
+export const apiGatewayPayload = Object.freeze({
+  TYPE: 'type',
+  ORIGIN: 'origin',
+  CALLBACK_URL: 'callbackUrl',
+  CORRELATION_ID: 'correlationId',
+  FLOW: 'flow',
+  AUTOMATION_NAME: 'automationName',
+  RECEIVER: 'receiver',
+  COMPANY_ID: 'companyId',
+  STORE_ID: 'storeId',
+  TERMINAL_ID: 'terminalId'
+})

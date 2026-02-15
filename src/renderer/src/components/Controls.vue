@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import { mountPayloadPayment } from '../services/service'
-import { PaymentMethod, PaymentType } from '../../../shared/constants/Fields'
+import { definePaymentType } from '@renderer/services/service'
+import { PaymentMethod, PaymentType } from '@shared/constants/Fields'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -83,7 +83,7 @@ export default {
       try {
         if (this.carrinhoVazio) throw new Error('Carrinho vazio paizao')
 
-        await mountPayloadPayment({
+        await definePaymentType({
           typeOrMethod,
           value: this.cartTotalValue,
           integrationMode: this.integrationMode

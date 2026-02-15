@@ -2,20 +2,30 @@ import { resolve } from 'path'
 import { defineConfig } from 'electron-vite'
 import vue from '@vitejs/plugin-vue'
 
-export default defineConfig({
-  renderer: {
-    resolve: {
-      alias: {
-        '@renderer': resolve('src/renderer/src')
+export default defineConfig(() => {
+  const aliases = {
+    '@': resolve('src'),
+    '@renderer': resolve('src/renderer/src'),
+    '@shared': resolve('src/shared')
+  }
+
+  return {
+    renderer: {
+      resolve: {
+        alias: { ...aliases }
+      },
+      plugins: [vue()]
+    },
+
+    main: {
+      resolve: {
+        alias: { ...aliases }
       }
     },
-    plugins: [vue()]
-  },
 
-  main: {
-    resolve: {
-      alias: {
-        '@': resolve('src')
+    preload: {
+      resolve: {
+        alias: { ...aliases }
       }
     }
   }

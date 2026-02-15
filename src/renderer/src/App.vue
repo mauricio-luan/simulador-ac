@@ -41,7 +41,15 @@ import Totals from './components/Totals.vue'
 import SwitchIntegracao from './components/SwitchIntegracao.vue'
 
 export default {
-  components: { Carrinho, Controls, Log, ProductList, Rodape, Totals, SwitchIntegracao },
+  components: {
+    Carrinho,
+    Controls,
+    Log,
+    ProductList,
+    Rodape,
+    Totals,
+    SwitchIntegracao
+  },
 
   data() {
     return {
@@ -88,6 +96,10 @@ export default {
         }
       ]
     }
+  },
+
+  async created() {
+    await this.$store.dispatch('syncApiGatewayConfig')
   }
 }
 </script>

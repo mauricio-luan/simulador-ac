@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { pooling } from './pooling'
-import { logger } from '../log/logger'
+import { logger } from '@/main/log/logger'
 
 export const createPayment = async (payload) => {
+  const logLabel = '[createPayment]'
   try {
     if (!payload || payload == undefined) throw new Error('Payload vazio.')
 
@@ -17,15 +18,14 @@ export const createPayment = async (payload) => {
     return response.data
   } catch (err) {
     if (err.response) {
-      console.error(err.response.data.message)
+      logger.error(`${logLabel} -> ${err.response.status} - ${err.response.data.message}`)
       throw new Error(err.response.data.message)
     }
     if (err.request) {
-      console.error(err.request)
-      throw new Error(err.request)
-    } else {
-      console.error(err.message)
-      throw err.message
+      logger.error(`${logLabel} -> ${err.code}`)
+      throw new Error('erro servidor')
     }
+    logger.error(`${logLabel} -> ${err.message}`)
+    throw new Error(err.message)
   }
 }

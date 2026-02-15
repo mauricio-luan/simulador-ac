@@ -1,26 +1,28 @@
 import { BrowserWindow } from 'electron'
-import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
+import path from 'path'
 
 export function createWindow() {
+  const preloadPath = is.dev
+    ? path.resolve('src/preload/index.js')
+    : path.resolve('out/preload/index.js')
+
   const win = new BrowserWindow({
     width: 1280,
     height: 720,
-    // frame: false,
     resizable: false,
     show: false,
-    // fullscreen: true,
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
+      preload: preloadPath,
       sandbox: false
     }
   })
 
   win.on('ready-to-show', () => win.show())
 
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+  if (is.dev) {
     win.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
-    win.loadFile(join(__dirname, '../renderer/index.html'))
+    win.loadFile(path.resolve('src/renderer/dist/index.html'))
   }
 }

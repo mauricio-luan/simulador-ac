@@ -4,7 +4,14 @@ const store = createStore({
   state: {
     carrinho: [],
     logs: [],
-    integrationMode: 'localhost'
+    integrationMode: 'localhost',
+    apiGatewayConfig: {
+      callbackUrl: null,
+      automationName: null,
+      companyId: null,
+      storeId: null,
+      terminalId: null
+    }
   },
 
   mutations: {
@@ -32,6 +39,7 @@ const store = createStore({
 
     limpaCarrinho(state) {
       state.carrinho = []
+      window.api.log.info('[STORE] -> Carrinho foi limpo')
     },
 
     adicionaAoLog(state, log) {
@@ -40,6 +48,11 @@ const store = createStore({
 
     setIntegrationMode(state, mode) {
       state.integrationMode = mode
+      window.api.log.info(`[STORE] -> Modo de integracao alterado para: ${mode}`)
+    },
+
+    setApiGatewayConfig(state, config) {
+      state.apiGatewayConfig = config
     }
   },
 
@@ -58,7 +71,19 @@ const store = createStore({
 
     limpaCarrinho(context) {
       context.commit('limpaCarrinho')
-      window.api.log.info('Carrinho foi limpo')
+    },
+
+    updateApiGatewayConfig(_context, config) {
+      window.api.electronStore.set('apiGatewayConfig', { ...config })
+    },
+
+    async getApiGatewayConfig() {
+      return await window.api.electronStore.get('apiGatewayConfig')
+    },
+
+    async syncApiGatewayConfig(context) {
+      const config = await context.dispatch('getApiGatewayConfig')
+      this.commit('setApiGatewayConfig', config)
     }
   },
 
@@ -92,6 +117,10 @@ const store = createStore({
 
     integrationMode(state) {
       return state.integrationMode
+    },
+
+    apiGatewayConfig(state) {
+      return state.apiGatewayConfig
     }
   }
 })

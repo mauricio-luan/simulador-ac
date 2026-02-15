@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { logger } from '../log/logger'
+import { logger } from '@/main/log/logger'
 
 export const pooling = async () => {
   let limiteTentativas = 30
