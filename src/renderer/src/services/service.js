@@ -1,9 +1,10 @@
+import { v4 as uuid } from 'uuid'
 import { Fields, CommandType, PaymentMethod, apiGatewayPayload } from '@shared/constants/Fields'
-import store from '@renderer/store/store'
+import store from '../store/store'
 
-export async function definePaymentType({ typeOrMethod, value, integrationMode }) {
+export async function definePaymentType({ typeOrMethod, value }) {
   const logLabel = '[definePaymentType]'
-  window.api.log.info(`${logLabel} -> IntegrationMode: ${integrationMode}`)
+  window.api.log.info(`${logLabel} -> IntegrationMode: ${store.state.integrationMode}`)
 
   if (store.state.integrationMode === 'localhost') {
     return await localhostPayment({ typeOrMethod, value })
@@ -39,19 +40,21 @@ const localhostPayment = async ({ typeOrMethod, value }) => {
 
 const gatewayPayment = async ({ typeOrMethod, value }) => {
   const logLabel = '[gatewayPayment]'
+  const { callbackUrl, automationName, companyId, storeId, terminalId } =
+    store.getters.apiGatewayConfig
   try {
     const payload = {
       [apiGatewayPayload.TYPE]: 'INPUT',
       [apiGatewayPayload.ORIGIN]: 'PDV',
       data: {
-        [apiGatewayPayload.CALLBACK_URL]: '',
-        [apiGatewayPayload.CORRELATION_ID]: 'aqui eu vou meter algo',
+        [apiGatewayPayload.CALLBACK_URL]: callbackUrl,
+        [apiGatewayPayload.CORRELATION_ID]: uuid(),
         [apiGatewayPayload.FLOW]: 'SYNC',
-        [apiGatewayPayload.AUTOMATION_NAME]: '',
+        [apiGatewayPayload.AUTOMATION_NAME]: automationName,
         receiver: {
-          [apiGatewayPayload.COMPANY_ID]: '',
-          [apiGatewayPayload.STORE_ID]: '',
-          [apiGatewayPayload.TERMINAL_ID]: ''
+          [apiGatewayPayload.COMPANY_ID]: companyId,
+          [apiGatewayPayload.STORE_ID]: storeId,
+          [apiGatewayPayload.TERMINAL_ID]: terminalId
         },
         message: {
           [Fields.COMMAND]: CommandType.PAYMENT,
@@ -67,7 +70,7 @@ const gatewayPayment = async ({ typeOrMethod, value }) => {
       payload.data.message[Fields.PAYMENT_TYPE] = typeOrMethod
     }
 
-    window.api.log.info(`${logLabel} -> Payload: ${JSON.stringify(payload)}`)
+    window.api.log.info(`${logLabel} -> payload: ${JSON.stringify(payload)}`)
     const response = await window.api.payment.apiGateway(payload)
     return response
   } catch (err) {

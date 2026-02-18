@@ -52,7 +52,11 @@ const store = createStore({
     },
 
     setApiGatewayConfig(state, config) {
-      state.apiGatewayConfig = config
+      state.apiGatewayConfig = { ...state.apiGatewayConfig, ...config }
+    },
+
+    setToken(state, token) {
+      state.IdToken = token
     }
   },
 
@@ -73,17 +77,30 @@ const store = createStore({
       context.commit('limpaCarrinho')
     },
 
-    updateApiGatewayConfig(_context, config) {
-      window.api.electronStore.set('apiGatewayConfig', { ...config })
+    async getToken() {
+      try {
+        const response = await window.api.payment.getToken()
+        window.api.electronStore.set('IdToken', response)
+        window.api.log.info(`[STORE] -> Token de acesso atualizado com sucesso: ${response}`)
+      } catch (error) {
+        window.api.log.error(`[STORE] -> Erro ao obter token de acesso: ${error.message}`)
+        throw error
+      }
     },
 
-    async getApiGatewayConfig() {
-      return await window.api.electronStore.get('apiGatewayConfig')
+    saveApiGatewayConfig(context, config) {
+      try {
+        window.api.electronStore.set('apiGatewayConfig', { ...config })
+        context.commit('setApiGatewayConfig', config)
+      } catch (error) {
+        window.api.log.error(`[STORE] -> Erro ao salvar configuração API Gateway: ${error.message}`)
+      }
     },
 
-    async syncApiGatewayConfig(context) {
-      const config = await context.dispatch('getApiGatewayConfig')
-      this.commit('setApiGatewayConfig', config)
+    async fetchApiGatewayConfig(context) {
+      const config = await window.api.electronStore.get('apiGatewayConfig')
+      context.commit('setApiGatewayConfig', config)
+      window.api.log.info('[STORE] -> Configuração API Gateway recuperada e atualizada')
     }
   },
 

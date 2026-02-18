@@ -54,16 +54,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['integrationMode', 'apiGatewayConfig'])
+    ...mapGetters(['apiGatewayConfig'])
   },
 
   watch: {
     mode(newMode) {
       this.$store.commit('setIntegrationMode', newMode)
     },
-    isOpen(newValue) {
-      this.$store.dispatch('syncApiGatewayConfig')
+    async isOpen(newValue) {
       if (newValue) {
+        await this.$store.dispatch('fetchApiGatewayConfig')
         this.form = { ...this.apiGatewayConfig }
       }
     }
@@ -71,7 +71,7 @@ export default {
 
   methods: {
     atualizarConfig() {
-      this.$store.dispatch('updateApiGatewayConfig', this.form)
+      this.$store.dispatch('saveApiGatewayConfig', this.form)
       this.isOpen = false
     }
   }

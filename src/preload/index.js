@@ -2,8 +2,9 @@ import { contextBridge, ipcRenderer } from 'electron'
 
 const api = {
   payment: {
-    create: async (payload) => await ipcRenderer.invoke('payment:create', payload),
-    apiGateway: async (payload) => await ipcRenderer.invoke('payment:api-gateway', payload)
+    getToken: async () => await ipcRenderer.invoke('payment:get-token'),
+    apiGateway: async (payload) => await ipcRenderer.invoke('payment:api-gateway', payload),
+    create: async (payload) => await ipcRenderer.invoke('payment:create', payload)
   },
   log: {
     info: (msg) => ipcRenderer.send('log:write', { level: 'info', message: msg }),

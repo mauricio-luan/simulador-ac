@@ -32,7 +32,6 @@
 <script>
 import { definePaymentType } from '@renderer/services/service'
 import { PaymentMethod, PaymentType } from '@shared/constants/Fields'
-import { mapGetters } from 'vuex'
 
 export default {
   emits: ['handle-option'],
@@ -67,12 +66,9 @@ export default {
     carrinhoVazio() {
       return this.$store.getters.carrinhoEstaVazio
     },
-
     cartTotalValue() {
       return this.$store.getters.valorTotalNoCarrinho
-    },
-
-    ...mapGetters(['integrationMode'])
+    }
   },
 
   methods: {
@@ -82,11 +78,9 @@ export default {
 
       try {
         if (this.carrinhoVazio) throw new Error('Carrinho vazio paizao')
-
         await definePaymentType({
           typeOrMethod,
-          value: this.cartTotalValue,
-          integrationMode: this.integrationMode
+          value: this.cartTotalValue
         })
       } catch (err) {
         console.error(err)

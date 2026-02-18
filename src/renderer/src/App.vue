@@ -99,7 +99,8 @@ export default {
   },
 
   async created() {
-    await this.$store.dispatch('syncApiGatewayConfig')
+    await this.$store.dispatch('getToken')
+    await this.$store.dispatch('fetchApiGatewayConfig')
   }
 }
 </script>

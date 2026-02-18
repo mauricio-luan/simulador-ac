@@ -1,9 +1,11 @@
+import { is } from '@electron-toolkit/utils'
 import { createLogger, format, transports } from 'winston'
-import { join } from 'path'
+import { resolve } from 'path'
+import { resourcesPath } from 'process'
 
 const { combine, timestamp, label, printf, metadata } = format
 
-const logFile = join(__dirname, 'app.log')
+const logFile = is.dev ? resolve('src/app.log') : resolve(resourcesPath, '../app.log')
 
 const defaultLogger = printf((info) => {
   let log = `${info.timestamp} ${info.level} [${info.label}] - ${info.message}`
