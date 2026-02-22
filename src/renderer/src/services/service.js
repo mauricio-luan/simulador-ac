@@ -47,7 +47,7 @@ const gatewayPayment = async ({ typeOrMethod, value }) => {
       [apiGatewayPayload.TYPE]: 'INPUT',
       [apiGatewayPayload.ORIGIN]: 'PDV',
       data: {
-        [apiGatewayPayload.CALLBACK_URL]: callbackUrl,
+        [apiGatewayPayload.CALLBACK_URL]: `${callbackUrl}/response`,
         [apiGatewayPayload.CORRELATION_ID]: uuid(),
         [apiGatewayPayload.FLOW]: 'SYNC',
         [apiGatewayPayload.AUTOMATION_NAME]: automationName,

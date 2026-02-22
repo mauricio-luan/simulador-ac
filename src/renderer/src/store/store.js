@@ -81,7 +81,7 @@ const store = createStore({
       try {
         const response = await window.api.payment.getToken()
         window.api.electronStore.set('IdToken', response)
-        window.api.log.info(`[STORE] -> Token de acesso atualizado com sucesso: ${response}`)
+        window.api.log.info(`[STORE] -> Token de acesso atualizado com sucesso`)
       } catch (error) {
         window.api.log.error(`[STORE] -> Erro ao obter token de acesso: ${error.message}`)
         throw error

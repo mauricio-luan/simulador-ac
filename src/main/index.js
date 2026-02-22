@@ -1,10 +1,12 @@
 import { app, BrowserWindow } from 'electron'
 import { createWindow } from './window'
 import { registerIpcHandlers } from './ipc/ipcHandlers'
+import { startServer } from './services/server'
 
 app.whenReady().then(() => {
-  registerIpcHandlers()
   createWindow()
+  registerIpcHandlers()
+  startServer()
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()

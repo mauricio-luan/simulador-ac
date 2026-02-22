@@ -2,6 +2,7 @@ import axios from 'axios'
 import { pooling } from './pooling'
 import { logger } from '@/main/log/logger'
 import electronStore from '../../plugins/electron-store'
+import { emitter } from './server'
 
 export const createPayment = async (payload) => {
   const logLabel = '[createPayment]'
@@ -45,30 +46,43 @@ export const getTokenApiGateway = async () => {
 
 export const createPaymentApiGateway = async (payload) => {
   const logLabel = '[createPaymentApiGateway]'
-  try {
-    if (!payload || payload == undefined) throw new Error('Payload vazio.')
+  if (!payload || payload == undefined) throw new Error('Payload vazio.')
+  const token = electronStore.get('IdToken', false)
 
-    const token = electronStore.get('IdToken', false)
-
-    await axios.post(`${import.meta.env.VITE_API_GATEWAY_URL}/cloud-notification/create`, payload, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    // const response = await poolingGateway()
-
-    // logger.info('response -> ', response.data)
-    // return response.data
-  } catch (err) {
-    if (err.response) {
-      logger.error(`${logLabel} -> ${err.response.status} - ${err.response.data.message}`)
-      throw new Error(err.response.data.message)
+  return new Promise((resolve, reject) => {
+    const onResponse = (payload) => {
+      console.log('escutei o evento')
+      clearTimeout()
+      resolve(payload)
     }
-    if (err.request) {
-      logger.error(`${logLabel} -> ${err.code}`)
-      throw new Error('erro servidor')
-    }
-    logger.error(`${logLabel} -> ${err.message}`)
-    throw new Error(err.message)
-  }
+
+    emitter.once('apigateway:response', onResponse)
+
+    const timeoutId = setTimeout(() => {
+      emitter.off('apigateway:response', onResponse)
+      reject(new Error('timeout aguardando payload payer'))
+    }, 60000)
+
+    axios
+      .post(import.meta.env.VITE_API_GATEWAY_URL, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .catch((err) => {
+        clearTimeout(timeoutId)
+        emitter.off('apigateway:response', onResponse)
+
+        if (err.response) {
+          logger.error(`${logLabel} -> ${err.response.status} - ${err.response.data.message}`)
+          throw new Error(err.response.data.message)
+        }
+        if (err.request) {
+          logger.error(`${logLabel} -> ${err.code}`)
+          throw new Error('erro servidor')
+        }
+        logger.error(`${logLabel} -> ${err.message}`)
+        throw new Error(err.message)
+      })
+  })
 }
