@@ -1,16 +1,35 @@
 <template>
-  <v-table class="border-thin" height="250" striped="odd" fixed-header hover>
+  <v-table
+    class="border-thin"
+    height="250"
+    striped="odd"
+    fixed-header
+    hover
+  >
     <thead>
       <tr>
-        <th class="text-left">Id</th>
-        <th class="text-left">Produto</th>
-        <th class="text-left">Valor</th>
-        <th class="text-left">QTD</th>
-        <th class="text-left">Ação</th>
+        <th class="text-left">
+          Id
+        </th>
+        <th class="text-left">
+          Produto
+        </th>
+        <th class="text-left">
+          Valor
+        </th>
+        <th class="text-left">
+          QTD
+        </th>
+        <th class="text-left">
+          Ação
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="p in produtos" :key="p.id">
+      <tr
+        v-for="p in produtos"
+        :key="p.id"
+      >
         <td>{{ p.id }}</td>
         <td>{{ p.produto }}</td>
         <td>R$ {{ p.valorUnitario.toFixed(2) }}</td>

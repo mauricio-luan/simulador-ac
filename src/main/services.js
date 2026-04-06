@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { pooling } from './pooling'
-import { logger } from '@/main/log/logger'
-import electronStore from '../../plugins/electron-store'
+import { logger } from './logger'
+import electronStore from '../plugins/electron-store'
 import { emitter } from './server'
 
 export const createPayment = async (payload) => {
@@ -16,7 +15,9 @@ export const createPayment = async (payload) => {
     return response.data
   } catch (err) {
     if (err.response) {
-      logger.error(`${logLabel} -> ${err.response.status} - ${err.response.data.message}`)
+      logger.error(
+        `${logLabel} -> ${err.response.status} - ${err.response.data.message}`
+      )
       throw new Error(err.response.data.message)
     }
     if (err.request) {
@@ -74,7 +75,9 @@ export const createPaymentApiGateway = async (payload) => {
         emitter.off('apigateway:response', onResponse)
 
         if (err.response) {
-          logger.error(`${logLabel} -> ${err.response.status} - ${err.response.data.message}`)
+          logger.error(
+            `${logLabel} -> ${err.response.status} - ${err.response.data.message}`
+          )
           throw new Error(err.response.data.message)
         }
         if (err.request) {
@@ -85,4 +88,30 @@ export const createPaymentApiGateway = async (payload) => {
         throw new Error(err.message)
       })
   })
+}
+
+const pooling = async () => {
+  let limiteTentativas = 30
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+  try {
+    logger.info('Aguardando response...')
+
+    for (let tentativas = 0; tentativas < limiteTentativas; tentativas++) {
+      try {
+        const response = await axios.get(
+          'http://localhost:6060/Client/response'
+        )
+        if (response.status === 200) return response
+      } catch (innerError) {
+        console.warn('Erro ou sem operacao:', innerError.message)
+      }
+      await sleep(2000)
+    }
+
+    throw new Error('Timeout: Limite de tentativas excedido.')
+  } catch (error) {
+    console.error('Falha no pooling:', error)
+    throw error
+  }
 }

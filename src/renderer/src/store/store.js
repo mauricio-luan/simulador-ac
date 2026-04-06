@@ -48,7 +48,7 @@ const store = createStore({
 
     setIntegrationMode(state, mode) {
       state.integrationMode = mode
-      window.api.log.info(`[STORE] -> Modo de integracao alterado para: ${mode}`)
+      window.api.log.info(`[STORE] -> Integracao alterada: ${mode}`)
     },
 
     setApiGatewayConfig(state, config) {
@@ -83,7 +83,9 @@ const store = createStore({
         window.api.electronStore.set('IdToken', response)
         window.api.log.info(`[STORE] -> Token de acesso atualizado com sucesso`)
       } catch (error) {
-        window.api.log.error(`[STORE] -> Erro ao obter token de acesso: ${error.message}`)
+        window.api.log.error(
+          `[STORE] -> Erro ao obter token de acesso: ${error.message}`
+        )
         throw error
       }
     },
@@ -93,14 +95,18 @@ const store = createStore({
         window.api.electronStore.set('apiGatewayConfig', { ...config })
         context.commit('setApiGatewayConfig', config)
       } catch (error) {
-        window.api.log.error(`[STORE] -> Erro ao salvar configuração API Gateway: ${error.message}`)
+        window.api.log.error(
+          `[STORE] -> Erro ao salvar configuracao API Gateway: ${error.message}`
+        )
       }
     },
 
     async fetchApiGatewayConfig(context) {
       const config = await window.api.electronStore.get('apiGatewayConfig')
       context.commit('setApiGatewayConfig', config)
-      window.api.log.info('[STORE] -> Configuração API Gateway recuperada e atualizada')
+      window.api.log.info(
+        '[STORE] -> Configuracao API Gateway recuperada e atualizada'
+      )
     }
   },
 

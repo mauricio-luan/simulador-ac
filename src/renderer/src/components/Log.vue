@@ -1,6 +1,15 @@
 <template>
-  <v-card id="logShell" ref="logShell" class="bg-grey-darken-4 pa-2 mt-8" height="200">
-    <li v-for="log in logContents" :key="log" class="text-caption mb-1">
+  <v-card
+    id="logShell"
+    ref="logShell"
+    class="bg-grey-darken-4 pa-2 mt-8"
+    height="250"
+  >
+    <li
+      v-for="log in logContents"
+      :key="log"
+      class="text-caption mb-1"
+    >
       <code>{{ log }}</code>
     </li>
   </v-card>
@@ -19,8 +28,10 @@ export default {
 
     logContents() {
       return this.logs.map((log) => {
-        return `${log.timestamp} ${log.level}  [${log.label}] - ${log.message} ${
-          Object.keys(log.metadata).length > 0 ? JSON.stringify(log.metadata) : ''
+        return `${log.timestamp} ${log.level} - ${log.message} ${
+          Object.keys(log.metadata).length > 0
+            ? JSON.stringify(log.metadata)
+            : ''
         }`
       })
     }

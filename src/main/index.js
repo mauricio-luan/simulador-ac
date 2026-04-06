@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 import { createWindow } from './window'
-import { registerIpcHandlers } from './ipc/ipcHandlers'
-import { startServer } from './services/server'
+import { registerIpcHandlers } from './ipcHandlers'
+import { startServer } from './server'
 
 app.whenReady().then(() => {
   createWindow()

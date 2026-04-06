@@ -1,10 +1,11 @@
 import eslintConfig from '@electron-toolkit/eslint-config'
-import eslintConfigPrettier from '@electron-toolkit/eslint-config-prettier'
 import eslintPluginVue from 'eslint-plugin-vue'
 import vueParser from 'vue-eslint-parser'
 
 export default [
-  { ignores: ['**/node_modules', '**/dist', '**/out'] },
+  {
+    ignores: ['**/node_modules', '**/dist', '**/out']
+  },
   eslintConfig,
   ...eslintPluginVue.configs['flat/recommended'],
   {
@@ -25,6 +26,5 @@ export default [
       'vue/require-default-prop': 'off',
       'vue/multi-word-component-names': 'off'
     }
-  },
-  eslintConfigPrettier
+  }
 ]

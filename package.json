@@ -7,7 +7,7 @@
   "author": "example.com",
   "homepage": "https://github.com/mauricio-luan/automacao-para-ambiente-desenvolvimento",
   "scripts": {
-    "format": "prettier --write .",
+    "format": "prettier --write . && eslint --cache --fix .",
     "lint": "eslint --cache --fix .",
     "start": "electron-vite preview",
     "dev": "electron-vite dev",

@@ -5,7 +5,9 @@
         <v-card-item>
           <v-card-title>Quantidade produtos</v-card-title>
         </v-card-item>
-        <v-card-text class="text-right text-h6"> {{ qtdItens }} </v-card-text>
+        <v-card-text class="text-right text-h6">
+          {{ qtdItens }}
+        </v-card-text>
       </v-card>
     </v-col>
 
@@ -14,7 +16,9 @@
         <v-card-item>
           <v-card-title>Total</v-card-title>
         </v-card-item>
-        <v-card-text class="text-right text-h6">R$ {{ valorTotal.toFixed(2) }}</v-card-text>
+        <v-card-text class="text-right text-h6">
+          R$ {{ valorTotal.toFixed(2) }}
+        </v-card-text>
       </v-card>
     </v-col>
   </v-row>

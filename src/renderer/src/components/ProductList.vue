@@ -1,14 +1,27 @@
 <template>
-  <v-table class="border-thin" height="250" striped="odd" fixed-header hover>
+  <v-table
+    class="border-thin"
+    height="250"
+    striped="odd"
+    fixed-header
+    hover
+  >
     <thead>
       <tr>
-        <th v-for="(field, index) in headers" :key="index" :class="field.class">
+        <th
+          v-for="(field, index) in headers"
+          :key="index"
+          :class="field.class"
+        >
           {{ field.text }}
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="p in produtos" :key="p.id">
+      <tr
+        v-for="p in produtos"
+        :key="p.id"
+      >
         <td>{{ p.id }}</td>
         <td>{{ p.produto }}</td>
         <td>R$ {{ p.valorUnitario.toFixed(2) }}</td>

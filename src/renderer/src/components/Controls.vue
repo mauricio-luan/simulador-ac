@@ -1,10 +1,26 @@
 <template>
-  <v-btn @click="$store.dispatch('limpaCarrinho')">Limpar carrinho</v-btn>
-  <v-btn :disabled="carrinhoVazio" @click="isOpen = true">Pagar</v-btn>
+  <v-btn @click="$store.dispatch('limpaCarrinho')">
+    Limpar carrinho
+  </v-btn>
+  <v-btn
+    :disabled="carrinhoVazio"
+    @click="isOpen = true"
+  >
+    Pagar
+  </v-btn>
 
-  <v-dialog v-model="isOpen" max-width="400" height="400">
-    <v-card v-if="!isLoading" class="align-center pa-5">
-      <v-card-title class="w-100 text-center">Escolha o metodo:</v-card-title>
+  <v-dialog
+    v-model="isOpen"
+    max-width="400"
+    height="400"
+  >
+    <v-card
+      v-if="!isLoading"
+      class="align-center pa-5"
+    >
+      <v-card-title class="w-100 text-center">
+        Escolha o metodo:
+      </v-card-title>
       <v-card-text class="w-75 d-flex justify-center flex-column ga-2">
         <v-btn
           v-for="btn in botoes"
@@ -17,21 +33,34 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn variant="text" color="error" prepend-icon="mdi-close" @click="isOpen = false">
+        <v-btn
+          variant="text"
+          color="error"
+          prepend-icon="mdi-close"
+          @click="isOpen = false"
+        >
           Esc
         </v-btn>
       </v-card-actions>
     </v-card>
 
-    <v-card v-else class="align-center justify-center">
-      <v-progress-circular :size="70" :width="7" color="orange" indeterminate />
+    <v-card
+      v-else
+      class="align-center justify-center"
+    >
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="orange"
+        indeterminate
+      />
     </v-card>
   </v-dialog>
 </template>
 
 <script>
 import { definePaymentType } from '@renderer/services/service'
-import { PaymentMethod, PaymentType } from '@shared/constants/Fields'
+import { PaymentMethod, PaymentType } from '@shared/constants'
 
 export default {
   emits: ['handle-option'],

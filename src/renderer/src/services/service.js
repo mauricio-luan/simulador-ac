@@ -1,10 +1,17 @@
 import { v4 as uuid } from 'uuid'
-import { Fields, CommandType, PaymentMethod, apiGatewayPayload } from '@shared/constants/Fields'
+import {
+  Fields,
+  CommandType,
+  PaymentMethod,
+  apiGatewayPayload
+} from '@shared/constants'
 import store from '../store/store'
 
 export async function definePaymentType({ typeOrMethod, value }) {
   const logLabel = '[definePaymentType]'
-  window.api.log.info(`${logLabel} -> IntegrationMode: ${store.state.integrationMode}`)
+  window.api.log.info(
+    `${logLabel} -> IntegrationMode: ${store.state.integrationMode}`
+  )
 
   if (store.state.integrationMode === 'localhost') {
     return await localhostPayment({ typeOrMethod, value })
@@ -30,7 +37,7 @@ const localhostPayment = async ({ typeOrMethod, value }) => {
 
     window.api.log.info(`${logLabel} -> Payload: ${JSON.stringify(payload)}`)
 
-    const response = await window.api.payment.create(payload)
+    const response = await window.api.payment.localhost(payload)
     return response
   } catch (err) {
     window.api.log.error(`${logLabel} -> ${err}`)
@@ -71,7 +78,7 @@ const gatewayPayment = async ({ typeOrMethod, value }) => {
     }
 
     window.api.log.info(`${logLabel} -> payload: ${JSON.stringify(payload)}`)
-    const response = await window.api.payment.apiGateway(payload)
+    const response = await window.api.payment.gateway(payload)
     return response
   } catch (err) {
     window.api.log.error(`${logLabel} -> ${err}`)
