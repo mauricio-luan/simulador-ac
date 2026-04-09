@@ -1,5 +1,9 @@
 {
   "editor.formatOnSave": true,
+  "editor.fontFamily": "Cascadia Code",
+  "editor.fontSize": 15,
+  "terminal.integrated.fontFamily": "Cascadia Code",
+  "terminal.integrated.fontSize": 14,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
   },
