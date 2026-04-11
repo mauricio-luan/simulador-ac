@@ -1,10 +1,10 @@
 {
-  "name": "automacao-para-ambiente-desenvolvimento",
+  "name": "simulador-ac",
   "version": "1.0.0",
-  "description": "Sistema de vendas integrado com sistema de pagamentos, via API",
+  "description": "Simulador de PDV integrado de pagamentos, via API",
   "main": "./out/main/index.js",
   "type": "module",
-  "author": "example.com",
+  "author": "LET - Luan Epic Technology",
   "homepage": "https://github.com/mauricio-luan/automacao-para-ambiente-desenvolvimento",
   "scripts": {
     "format": "prettier --write . && eslint --cache --fix .",

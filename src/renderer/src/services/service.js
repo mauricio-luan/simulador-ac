@@ -1,87 +1,82 @@
-import { v4 as uuid } from 'uuid'
-import {
-  Fields,
-  CommandType,
-  PaymentMethod,
-  apiGatewayPayload
-} from '@shared/constants'
 import store from '../store/store'
+import { v4 as uuid } from 'uuid'
+import { CommandType, Type, Flow } from '../../../shared/constants'
 
-export async function definePaymentType({ typeOrMethod, value }) {
-  const logLabel = '[definePaymentType]'
+export async function definePaymentType(payload) {
   window.api.log.info(
-    `${logLabel} -> IntegrationMode: ${store.state.integrationMode}`
+    `[definePaymentType] -> IntegrationMode: ${store.state.integrationMode}`
   )
 
-  if (store.state.integrationMode === 'localhost') {
-    return await localhostPayment({ typeOrMethod, value })
-  } else {
-    return await gatewayPayment({ typeOrMethod, value })
-  }
+  return store.state.integrationMode === 'localhost'
+    ? await localhostPayment(payload)
+    : await gatewayPayment(payload)
 }
 
-const localhostPayment = async ({ typeOrMethod, value }) => {
-  const logLabel = '[localhostPayment]'
+async function localhostPayment({
+  value,
+  paymentMethod,
+  paymentType,
+  paymentMethodSubType
+}) {
   try {
     const payload = {
-      [Fields.COMMAND]: CommandType.PAYMENT,
-      [Fields.VALUE]: value.toFixed(2)
+      command: CommandType.PAYMENT,
+      value: value.toFixed(2),
+      paymentMethod,
+      paymentType,
+      paymentMethodSubType
     }
 
-    if (Object.values(PaymentMethod).includes(typeOrMethod)) {
-      payload[Fields.PAYMENT_METHOD] = typeOrMethod
-    } else {
-      payload[Fields.PAYMENT_METHOD] = PaymentMethod.CARD
-      payload[Fields.PAYMENT_TYPE] = typeOrMethod
-    }
+    window.api.log.info(
+      `[localhostPayment] -> Payload: ${JSON.stringify(payload)}`
+    )
 
-    window.api.log.info(`${logLabel} -> Payload: ${JSON.stringify(payload)}`)
-
-    const response = await window.api.payment.localhost(payload)
-    return response
+    return await window.api.payment.localhost(payload)
   } catch (err) {
-    window.api.log.error(`${logLabel} -> ${err}`)
+    window.api.log.error(`[localhostPayment] -> ${err}`)
     throw err
   }
 }
 
-const gatewayPayment = async ({ typeOrMethod, value }) => {
-  const logLabel = '[gatewayPayment]'
+async function gatewayPayment({
+  value,
+  paymentMethod,
+  paymentType,
+  paymentMethodSubType
+}) {
   const { callbackUrl, automationName, companyId, storeId, terminalId } =
     store.getters.apiGatewayConfig
+
   try {
     const payload = {
-      [apiGatewayPayload.TYPE]: 'INPUT',
-      [apiGatewayPayload.ORIGIN]: 'PDV',
+      type: Type.INPUT,
+      origin: 'Simulador AC',
       data: {
-        [apiGatewayPayload.CALLBACK_URL]: `${callbackUrl}/response`,
-        [apiGatewayPayload.CORRELATION_ID]: uuid(),
-        [apiGatewayPayload.FLOW]: 'SYNC',
-        [apiGatewayPayload.AUTOMATION_NAME]: automationName,
+        callbackUrl,
+        correlationId: uuid(),
+        flow: Flow.SYNC,
+        automationName,
         receiver: {
-          [apiGatewayPayload.COMPANY_ID]: companyId,
-          [apiGatewayPayload.STORE_ID]: storeId,
-          [apiGatewayPayload.TERMINAL_ID]: terminalId
+          companyId,
+          storeId,
+          terminalId
         },
         message: {
-          [Fields.COMMAND]: CommandType.PAYMENT,
-          [Fields.VALUE]: value.toFixed(2)
+          command: CommandType.PAYMENT,
+          value: value.toFixed(2),
+          paymentMethod,
+          paymentType,
+          paymentMethodSubType
         }
       }
     }
 
-    if (Object.values(PaymentMethod).includes(typeOrMethod)) {
-      payload.data.message[Fields.PAYMENT_METHOD] = typeOrMethod
-    } else {
-      payload.data.message[Fields.PAYMENT_METHOD] = PaymentMethod.CARD
-      payload.data.message[Fields.PAYMENT_TYPE] = typeOrMethod
-    }
-
-    window.api.log.info(`${logLabel} -> payload: ${JSON.stringify(payload)}`)
-    const response = await window.api.payment.gateway(payload)
-    return response
+    window.api.log.info(
+      `[gatewayPayment] -> Payload: ${JSON.stringify(payload)}`
+    )
+    return await window.api.payment.gateway(payload)
   } catch (err) {
-    window.api.log.error(`${logLabel} -> ${err}`)
+    window.api.log.error(`[gatewayPayment] -> ${err}`)
     throw err
   }
 }

@@ -1,5 +1,6 @@
 <template>
   <v-btn
+    :disabled="carrinhoEstaVazio"
     @click="$store.dispatch('limpaCarrinho')"
   >
     Limpar carrinho
@@ -100,11 +101,6 @@ export default {
           label: '3 - Pix',
           method: PaymentMethod.PIX,
           type: PaymentType.DEBIT
-        },
-        {
-          label: '4 - E-Commerce',
-          method: PaymentMethod.LINK,
-          type: PaymentType.ECOMMERCE
         }
       ]
     }

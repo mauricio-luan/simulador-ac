@@ -87,3 +87,14 @@ export const apiGatewayPayload = Object.freeze({
   STORE_ID: 'storeId',
   TERMINAL_ID: 'terminalId'
 })
+
+export const Type = Object.freeze({
+  INPUT: 'INPUT',
+  INTERNAL_INPUT: 'INTERNAL_INPUT',
+  SEND_TO_PRINTER: 'SEND_TO_PRINTER'
+})
+
+export const Flow = Object.freeze({
+  SYNC: 'SYNC',
+  ASYNC: 'ASYNC'
+})

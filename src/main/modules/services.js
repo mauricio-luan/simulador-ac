@@ -74,7 +74,7 @@ const pooling = async () => {
         const response = await axios.get(
           'http://localhost:6060/Client/response'
         )
-        if (response.status === 200) return response
+        if (response.status === 200) return response.data
       } catch (innerError) {
         console.warn('Erro ou sem operacao:', innerError.message)
       }

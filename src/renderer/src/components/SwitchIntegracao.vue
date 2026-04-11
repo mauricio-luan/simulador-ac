@@ -12,7 +12,6 @@
       :false-value="integrationModes.LOCALHOST"
     />
     <v-btn
-      v-if="mode == integrationModes.GATEWAY"
       class="ma-0 pa-0 h-25 w-25"
       color="primary"
       style="position: absolute; top: 100px; right: 16px"
@@ -31,7 +30,7 @@
     <v-form>
       <v-card>
         <v-card-title class="text-h5 d-flex justify-center">
-          Configuração API Gateway
+          Configuração Terminal
         </v-card-title>
         <v-card-text>
           <v-text-field

@@ -1,9 +1,7 @@
 <template>
-  <v-card
-    class="align-center pa-5"
-  >
+  <v-card class="align-center pa-5">
     <v-card-title class="w-100 text-center">
-      Escolha o metodo: <!-- ${methodOrSubMethod} -->
+      Escolha o metodo:
     </v-card-title>
 
     <v-card-text class="w-75 d-flex justify-center flex-column ga-2">
@@ -24,7 +22,7 @@
         prepend-icon="mdi-close"
         @click="$emit('close')"
       >
-        Esc
+        Cancelar
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -38,7 +36,7 @@ export default {
     buttons: Array
   },
 
-  emits: ['close', 'select'],
+  emits: ['close', 'select']
 }
 </script>
 <style scoped></style>

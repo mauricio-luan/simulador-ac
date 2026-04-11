@@ -5,13 +5,15 @@ import path from 'path'
 export function createWindow() {
   const preloadPath = is.dev
     ? path.resolve('src/preload/index.js')
-    : path.resolve('out/preload/index.js')
+    : path.join(__dirname, '../preload/index.mjs')
 
   const win = new BrowserWindow({
     width: 1280,
     height: 720,
     resizable: false,
     show: false,
+    center: true,
+    title: 'Simulador AC',
     webPreferences: {
       preload: preloadPath,
       sandbox: false
@@ -23,6 +25,6 @@ export function createWindow() {
   if (is.dev) {
     win.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
-    win.loadFile(path.resolve('src/renderer/dist/index.html'))
+    win.loadFile(path.join(__dirname, '../renderer/index.html'))
   }
 }

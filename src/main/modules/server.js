@@ -40,7 +40,6 @@ export async function startServer() {
   const apiGatewayConfig = electronStore.get('apiGatewayConfig', false)
   electronStore.set('apiGatewayConfig', {
     ...(apiGatewayConfig ? apiGatewayConfig : {}),
-    callbackUrl: listener.url()
+    callbackUrl: listener.url() + '/response'
   })
-  // if (!apiGatewayConfig.callbackUrl || apiGatewayConfig.callbackUrl === '') {
 }

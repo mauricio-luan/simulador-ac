@@ -1,7 +1,8 @@
-appId: com.electron.app
-productName: electron-vue
+appId: LET - Luan Epic Technology
+productName: Simulador AC
+copyright: Copyright © 2026 Mauricio Luan
 directories:
-  buildResources: build
+  buildResources: assets
 files:
   - '!**/.vscode/*'
   - '!src/*'
@@ -11,7 +12,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: electron-vue
+  executableName: Simulador AC
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
