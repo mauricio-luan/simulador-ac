@@ -1,28 +1,16 @@
 import axios from 'axios'
+import electronStore from '../../plugins/electron-store'
 import { logger } from './logger'
-import electronStore from '../plugins/electron-store'
 import { emitter } from './server'
 
 export function localhostPayment(payload) {
-  const endpoint = 'http://localhost:6060/Client/request'
+  if (!payload) {
+    return Promise.reject(new Error('Payload vazio'))
+  }
 
-  return new Promise((resolve, reject) => {
-    if (!payload) {
-      reject(new Error('Payload vazio'))
-      return
-    }
-
-    axios
-      .post(endpoint, payload)
-      .then(() => {
-        pooling()
-          .then((response) => {
-            resolve(response.data)
-          })
-          .catch((e) => reject(e))
-      })
-      .catch((e) => reject(e))
-  })
+  return axios
+    .post('http://localhost:6060/Client/request', payload)
+    .then(() => pooling())
 }
 
 export function getTokenApiGateway() {
@@ -32,25 +20,21 @@ export function getTokenApiGateway() {
     password: import.meta.env.VITE_PASSWORD
   }
 
-  return new Promise((resolve, reject) => {
-    axios
-      .post(import.meta.env.VITE_OAUTH_URL, payload)
-      .then((response) => {
-        resolve(response.data?.AuthenticationResult?.IdToken)
-      })
-      .catch((e) => reject(e))
-  })
+  return axios
+    .post(import.meta.env.VITE_OAUTH_URL, payload)
+    .then((res) => res.data?.AuthenticationResult?.IdToken)
 }
 
 export function gatewayPayment(payload) {
   const token = electronStore.get('IdToken', false)
-  let timeoutId = null
 
   return new Promise((resolve, reject) => {
     if (!payload || !token) {
       reject(new Error('Payload ou/e token vazio(s)'))
       return
     }
+
+    let timeoutId = null
 
     const onResponse = (data) => {
       clearTimeout(timeoutId)
@@ -69,9 +53,10 @@ export function gatewayPayment(payload) {
         timeoutId = setTimeout(() => {
           emitter.off('apigateway:response', onResponse)
           reject(new Error('Time out'))
-        })
-      }, 60000)
+        }, 40000)
+      })
       .catch((err) => {
+        emitter.off('apigateway:response', onResponse)
         reject(err)
       })
   })

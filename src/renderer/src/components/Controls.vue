@@ -63,12 +63,9 @@ import { definePaymentType } from '@renderer/services/service'
 import { PaymentMethod, PaymentType } from '@shared/constants'
 
 export default {
-  emits: ['handle-option'],
-
   data() {
     return {
       isOpen: false,
-      message: null,
       isLoading: false,
       botoes: [
         {
@@ -107,16 +104,18 @@ export default {
 
       try {
         if (this.carrinhoVazio) throw new Error('Carrinho vazio paizao')
-        await definePaymentType({
+        const data = await definePaymentType({
           typeOrMethod,
           value: this.cartTotalValue
         })
+
+        window.api.log.info(`response: ${JSON.stringify(data)}`)
+        this.$store.dispatch('limpaCarrinho')
       } catch (err) {
         console.error(err)
       } finally {
         this.isOpen = false
         this.isLoading = false
-        this.$store.dispatch('limpaCarrinho')
       }
     }
   }

@@ -8,20 +8,12 @@
   >
     <thead>
       <tr>
-        <th class="text-left">
-          Id
-        </th>
-        <th class="text-left">
-          Produto
-        </th>
-        <th class="text-left">
-          Valor
-        </th>
-        <th class="text-left">
-          QTD
-        </th>
-        <th class="text-left">
-          Ação
+        <th
+          v-for="label in labels"
+          :key="label"
+          class="text-left"
+        >
+          {{ label }}
         </th>
       </tr>
     </thead>
@@ -57,6 +49,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      labels: ['Id', 'Produto', 'Valor', 'QTD', 'Ação']
+    }
+  },
   computed: {
     produtos() {
       return this.$store.getters.getTodosProdutos

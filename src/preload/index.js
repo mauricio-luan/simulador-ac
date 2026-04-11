@@ -1,19 +1,17 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 const payment = {
-  getToken: async () => await ipcRenderer.invoke('payment:get-gateway-token'),
-  gateway: async (payload) =>
-    await ipcRenderer.invoke('payment:gateway', payload),
-  localhost: async (payload) =>
-    await ipcRenderer.invoke('payment:localhost', payload),
-  apiStatus: async () => await ipcRenderer.invoke('api-status')
+  apiStatus: () => ipcRenderer.invoke('api-status'),
+  getToken: () => ipcRenderer.invoke('payment:get-gateway-token'),
+  gateway: (payload) => ipcRenderer.invoke('payment:gateway', payload),
+  localhost: (payload) => ipcRenderer.invoke('payment:localhost', payload)
 }
 
 const log = {
   info: (msg) => ipcRenderer.send('log:write', { level: 'info', message: msg }),
+  warn: (msg) => ipcRenderer.send('log:write', { level: 'warn', message: msg }),
   error: (msg) =>
     ipcRenderer.send('log:write', { level: 'error', message: msg }),
-  warn: (msg) => ipcRenderer.send('log:write', { level: 'warn', message: msg }),
   onLogAdded: (cb) => {
     const log = (_event, payload) => cb(payload)
     ipcRenderer.on('log:update', log)
@@ -23,7 +21,7 @@ const log = {
 
 const electronStore = {
   set: (key, value) => ipcRenderer.send('electron-store:set', { key, value }),
-  get: async (key) => await ipcRenderer.invoke('electron-store:get', key)
+  get: (key) => ipcRenderer.invoke('electron-store:get', key)
 }
 
 contextBridge.exposeInMainWorld('api', {

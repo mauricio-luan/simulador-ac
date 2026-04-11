@@ -16,7 +16,7 @@
 
             <v-row>
               <v-col cols="8">
-                <Controls @handle-option="handleSubmitPayment" />
+                <Controls />
               </v-col>
               <v-col cols="4">
                 <SwitchIntegracao />

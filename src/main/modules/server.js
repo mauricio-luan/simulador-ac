@@ -1,7 +1,7 @@
 import express from 'express'
 import EventEmitter from 'events'
 import ngrok from '@ngrok/ngrok'
-import electronStore from '../plugins/electron-store'
+import electronStore from '../../plugins/electron-store'
 
 let server = null
 const PORT = 3000
@@ -38,18 +38,9 @@ export async function startServer() {
   )
 
   const apiGatewayConfig = electronStore.get('apiGatewayConfig', false)
-  if (!apiGatewayConfig) {
-    electronStore.set('apiGatewayConfig', {
-      callbackUrl: listener.url(),
-      automationName: null,
-      companyId: null,
-      storeId: null,
-      terminalId: null
-    })
-  } else {
-    electronStore.set('apiGatewayConfig', {
-      ...apiGatewayConfig,
-      callbackUrl: listener.url()
-    })
-  }
+  electronStore.set('apiGatewayConfig', {
+    ...(apiGatewayConfig ? apiGatewayConfig : {}),
+    callbackUrl: listener.url()
+  })
+  // if (!apiGatewayConfig.callbackUrl || apiGatewayConfig.callbackUrl === '') {
 }
