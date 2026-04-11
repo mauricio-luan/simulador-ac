@@ -1,9 +1,11 @@
 <template>
-  <v-btn @click="$store.dispatch('limpaCarrinho')">
+  <v-btn
+    @click="$store.dispatch('limpaCarrinho')"
+  >
     Limpar carrinho
   </v-btn>
   <v-btn
-    :disabled="carrinhoVazio"
+    :disabled="carrinhoEstaVazio"
     @click="isOpen = true"
   >
     Pagar
@@ -14,35 +16,12 @@
     max-width="400"
     height="400"
   >
-    <v-card
+    <PaymentMethods
       v-if="!isLoading"
-      class="align-center pa-5"
-    >
-      <v-card-title class="w-100 text-center">
-        Escolha o metodo:
-      </v-card-title>
-      <v-card-text class="w-75 d-flex justify-center flex-column ga-2">
-        <v-btn
-          v-for="btn in botoes"
-          :key="btn.label"
-          variant="tonal"
-          @click="handleSubmitPayment(btn.value)"
-        >
-          {{ btn.label }}
-        </v-btn>
-      </v-card-text>
-
-      <v-card-actions>
-        <v-btn
-          variant="text"
-          color="error"
-          prepend-icon="mdi-close"
-          @click="isOpen = false"
-        >
-          Esc
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+      :buttons="currentButtons"
+      @select="handlePaymentSelection($event)"
+      @close="clean()"
+    />
 
     <v-card
       v-else
@@ -59,64 +38,124 @@
 </template>
 
 <script>
-import { definePaymentType } from '@renderer/services/service'
-import { PaymentMethod, PaymentType } from '@shared/constants'
+import { definePaymentType } from '../services/service'
+import PaymentMethods from './PaymentMethods.vue'
+import { mapGetters } from 'vuex'
+import {
+  PaymentMethod,
+  PaymentType,
+  PaymentMethodSubType
+} from '../../../shared/constants'
 
 export default {
+  components: {
+    PaymentMethods
+  },
+
   data() {
     return {
       isOpen: false,
       isLoading: false,
-      botoes: [
+      payload: null,
+      buttons: [
         {
           label: '1 - Debito',
-          value: PaymentType.DEBIT
+          method: PaymentMethod.CARD,
+          type: PaymentType.DEBIT,
+          subtypes: [
+            {
+              label: '1 - A vista',
+              subType: PaymentMethodSubType.FULL_PAYMENT
+            },
+            {
+              label: '2 - Debito Parcelado',
+              subType: PaymentMethodSubType.FINANCED_DEBIT
+            },
+            {
+              label: '3 - Debito Pré-Datado',
+              subType: PaymentMethodSubType.PREDATED_DEBIT
+            }
+          ]
         },
         {
           label: '2 - Credito',
-          value: PaymentType.CREDIT
+          method: PaymentMethod.CARD,
+          type: PaymentType.CREDIT,
+          subtypes: [
+            {
+              label: '1 - A vista',
+              subType: PaymentMethodSubType.FULL_PAYMENT
+            },
+            {
+              label: '2 - Parcelado Lojista',
+              subType: PaymentMethodSubType.FINANCED_NO_FEES
+            },
+            {
+              label: '3 - Parcelado Admin.',
+              subType: PaymentMethodSubType.FINANCED_WITH_FEES
+            }
+          ]
         },
         {
           label: '3 - Pix',
-          value: PaymentMethod.PIX
+          method: PaymentMethod.PIX,
+          type: PaymentType.DEBIT
         },
         {
           label: '4 - E-Commerce',
-          value: PaymentMethod.LINK
+          method: PaymentMethod.LINK,
+          type: PaymentType.ECOMMERCE
         }
       ]
     }
   },
 
   computed: {
-    carrinhoVazio() {
-      return this.$store.getters.carrinhoEstaVazio
-    },
-    cartTotalValue() {
-      return this.$store.getters.valorTotalNoCarrinho
+    ...mapGetters(['valorTotalNoCarrinho', 'carrinhoEstaVazio']),
+    currentButtons() {
+      return this.payload && this.payload.subtypes
+        ? this.payload.subtypes
+        : this.buttons
     }
   },
 
   methods: {
-    async handleSubmitPayment(typeOrMethod) {
+    async handlePaymentSelection(event) {
+      if (event.subtypes && event.subtypes.length > 0) {
+        this.payload = event
+        return
+      }
+
+      const finalPayload = { ...this.payload, ...event }
+      await this.handleSubmitPayment(finalPayload)
+    },
+    async handleSubmitPayment(payload) {
       this.isLoading = true
-      window.api.log.info('Chamou pagamento')
 
       try {
-        if (this.carrinhoVazio) throw new Error('Carrinho vazio paizao')
+        if (this.carrinhoEstaVazio) {
+          throw new Error('Carrinho vazio paizao')
+        }
+
         const data = await definePaymentType({
-          typeOrMethod,
-          value: this.cartTotalValue
+          value: this.valorTotalNoCarrinho,
+          paymentMethod: payload.method,
+          paymentType: payload.type,
+          paymentMethodSubType: payload.subType
         })
 
-        window.api.log.info(`response: ${JSON.stringify(data)}`)
+        window.api.log.info(`[APP] -> Response: ${JSON.stringify(data)}`)
         this.$store.dispatch('limpaCarrinho')
       } catch (err) {
-        console.error(err)
+        window.api.log.error(`[APP] -> Error: ${err.message}`)
       } finally {
-        this.isOpen = false
-        this.isLoading = false
+        this.clean()
       }
+    },
+    clean() {
+      this.payload = null
+      this.isOpen = false
+      this.isLoading = false
     }
   }
 }
