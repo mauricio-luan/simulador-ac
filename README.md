@@ -1,36 +1,61 @@
-# electron-vue
+<h1 align="center">Simulador AC</h1>
 
-Imagem previa de como está até o momento:
+<p align="center">
+  <img src="https://img.shields.io/badge/Electron-191970?style=for-the-badge&logo=Electron&logoColor=white" alt="Electron" />
+  <img src="https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vue.js&logoColor=4FC08D" alt="Vue.js" />
+  <img src="https://img.shields.io/badge/Vuetify-1867C0?style=for-the-badge&logo=vuetify&logoColor=AEDDFF" alt="Vuetify" />
+  <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js" />
+</p>
 
-<img src="assets/mvp.png" style="width: 800px">
+<p align="center">
+  Simulador de Automação Comercial (AC) integrado com sistema de pagamento. Aplicação desktop construída com Electron e Vue.js.
+</p>
 
-## Recommended IDE Setup
+---
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+## Prévia
 
-## Project Setup
+<p align="center">
+  <img src="assets/mvp.png" width="800" alt="Tela principal do simulador">
+</p>
 
-### Install
+## Início rápido
 
-```bash
-$ npm install
+### Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto baseado no `.env.example`:
+
+```env
+VITE_CLIENT_ID=
+VITE_USERNAME=
+VITE_PASSWORD=
+VITE_OAUTH_URL=
+VITE_API_GATEWAY_URL=
+VITE_NGROK_AUTHTOKEN=
 ```
 
-### Development
+### Instalação
+
+Clone o repositório e instale as dependências:
 
 ```bash
-$ npm run dev
+npm install
+```
+
+### Desenvolvimento
+
+Inicie a aplicação no modo de desenvolvimento:
+
+```bash
+npm run dev
 ```
 
 ### Build
 
+Gere o executável para Windows:
+
 ```bash
-# For windows
-$ npm run build:win
-
-# For macOS
-$ npm run build:mac
-
-# For Linux
-$ npm run build:linux
+npm run build:win
 ```
+
+@2026 - LET
