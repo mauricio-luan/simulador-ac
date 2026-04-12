@@ -32,28 +32,16 @@
         <v-card-title class="text-h5 d-flex justify-center">
           Configuração Terminal
         </v-card-title>
+
         <v-card-text>
           <v-text-field
-            v-model="form.callbackUrl"
-            label="Callback URL"
-          />
-          <v-text-field
-            v-model="form.automationName"
-            label="Automation name"
-          />
-          <v-text-field
-            v-model="form.companyId"
-            label="Company ID"
-          />
-          <v-text-field
-            v-model="form.storeId"
-            label="Store ID"
-          />
-          <v-text-field
-            v-model="form.terminalId"
-            label="Terminal ID"
+            v-for="field in fields"
+            :key="field.model"
+            v-model="form[field.model]"
+            :label="field.label"
           />
         </v-card-text>
+
         <v-card-actions>
           <v-btn
             color="success"
@@ -83,7 +71,14 @@ export default {
       integrationModes,
       mode: this.$store.state.integrationMode,
       isOpen: false,
-      form: {}
+      form: {},
+      fields: [
+        { label: 'Callback URL', model: 'callbackUrl' },
+        { label: 'Automation name', model: 'automationName' },
+        { label: 'Company ID', model: 'companyId' },
+        { label: 'Store ID', model: 'storeId' },
+        { label: 'Terminal ID', model: 'terminalId' }
+      ]
     }
   },
 

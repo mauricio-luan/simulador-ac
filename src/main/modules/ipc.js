@@ -5,7 +5,8 @@ import { logger } from './logger'
 import {
   localhostPayment,
   gatewayPayment,
-  getTokenApiGateway
+  getTokenApiGateway,
+  abortPayment
 } from './services'
 
 export function registerIPC() {
@@ -75,6 +76,17 @@ export function registerIPC() {
     } catch (error) {
       logger.error(`[IPC] Verificação de 'api-status' falhou: ${error.message}`)
       return false
+    }
+  })
+
+  ipcMain.handle('payment-abort', async () => {
+    try {
+      return await abortPayment()
+    } catch (error) {
+      logger.error(
+        `[IPC] Erro ao enviar comando de abort: ${error.message || error}`
+      )
+      throw error
     }
   })
 }

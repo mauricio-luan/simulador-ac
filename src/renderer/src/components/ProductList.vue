@@ -11,7 +11,7 @@
         <th
           v-for="(field, index) in headers"
           :key="index"
-          :class="field.class"
+          class="text-center"
         >
           {{ field.text }}
         </th>
@@ -47,10 +47,10 @@ export default {
   data() {
     return {
       headers: [
-        { class: 'text-left', text: 'Id' },
-        { class: 'text-left', text: 'Produto' },
-        { class: 'text-left', text: 'UN' },
-        { class: 'text-left', text: 'Ação' }
+        { text: 'Id' },
+        { text: 'Produto' },
+        { text: 'UN' },
+        { text: 'Ação' }
       ]
     }
   }

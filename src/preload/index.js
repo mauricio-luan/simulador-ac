@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 const payment = {
+  abort: () => ipcRenderer.invoke('payment-abort'),
   apiStatus: () => ipcRenderer.invoke('api-status'),
   getToken: () => ipcRenderer.invoke('payment:get-gateway-token'),
   gateway: (payload) => ipcRenderer.invoke('payment:gateway', payload),

@@ -24,7 +24,7 @@
       </div>
       <div>
         <span class="text-caption">
-          © 2026 Simluador Automação Integrada com Sistema Pgto
+          © 2026 Simulador Automação Comercial Integrada com Sistema Pgto
         </span>
       </div>
       <div>

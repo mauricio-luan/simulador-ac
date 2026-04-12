@@ -34,6 +34,14 @@
         color="orange"
         indeterminate
       />
+      <v-btn
+        variant="text"
+        color="error"
+        prepend-icon="mdi-close"
+        @click="abort()"
+      >
+        Abortar
+      </v-btn>
     </v-card>
   </v-dialog>
 </template>
@@ -152,6 +160,18 @@ export default {
       this.payload = null
       this.isOpen = false
       this.isLoading = false
+    },
+    async abort() {
+      window.api.log.info('[APP] -> Solicitado comando de abort')
+      try {
+        const response = await window.api.payment.abort()
+        if (response) {
+          window.api.log.info('[APP] -> Transação abortada com sucesso')
+          this.clean()
+        }
+      } catch (error) {
+        window.api.log.error(`[APP] -> Erro ao abortar pagamento: ${error.message}`)
+      }
     }
   }
 }

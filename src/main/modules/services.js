@@ -3,14 +3,14 @@ import electronStore from '../../plugins/electron-store'
 import { logger } from './logger'
 import { emitter } from './server'
 
+const baseUrl = 'http://localhost:6060/Client'
+
 export function localhostPayment(payload) {
   if (!payload) {
     return Promise.reject(new Error('Payload vazio'))
   }
 
-  return axios
-    .post('http://localhost:6060/Client/request', payload)
-    .then(() => pooling())
+  return axios.post(`${baseUrl}/request`, payload).then(() => pooling())
 }
 
 export function getTokenApiGateway() {
@@ -62,6 +62,10 @@ export function gatewayPayment(payload) {
   })
 }
 
+export async function abortPayment() {
+  return await axios.post(`${baseUrl}/request/abort`).then(() => pooling())
+}
+
 const pooling = async () => {
   let limiteTentativas = 30
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -71,9 +75,7 @@ const pooling = async () => {
 
     for (let tentativas = 0; tentativas < limiteTentativas; tentativas++) {
       try {
-        const response = await axios.get(
-          'http://localhost:6060/Client/response'
-        )
+        const response = await axios.get(`${baseUrl}/response`)
         if (response.status === 200) return response.data
       } catch (innerError) {
         console.warn('Erro ou sem operacao:', innerError.message)
