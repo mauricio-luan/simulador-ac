@@ -3,13 +3,15 @@ import { v4 as uuid } from 'uuid'
 import { CommandType, Type, Flow } from '../../../shared/constants'
 
 export async function definePaymentType(payload) {
-  window.api.log.info(
-    `[definePaymentType] -> IntegrationMode: ${store.state.integrationMode}`
-  )
-
   return store.state.integrationMode === 'localhost'
     ? await localhostPayment(payload)
     : await gatewayPayment(payload)
+}
+
+export async function handleAbort() {
+  return store.state.integrationMode === 'localhost'
+    ? await window.api.payment.abort()
+    : await gatewayPayment({ command: CommandType.ABORT })
 }
 
 async function localhostPayment({
@@ -21,7 +23,7 @@ async function localhostPayment({
   try {
     const payload = {
       command: CommandType.PAYMENT,
-      value: value.toFixed(2),
+      value,
       paymentMethod,
       paymentType,
       paymentMethodSubType
@@ -39,6 +41,7 @@ async function localhostPayment({
 }
 
 async function gatewayPayment({
+  command = CommandType.PAYMENT,
   value,
   paymentMethod,
   paymentType,
@@ -62,8 +65,8 @@ async function gatewayPayment({
           terminalId
         },
         message: {
-          command: CommandType.PAYMENT,
-          value: value.toFixed(2),
+          command,
+          value,
           paymentMethod,
           paymentType,
           paymentMethodSubType

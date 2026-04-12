@@ -23,7 +23,8 @@ export const CommandType = Object.freeze({
   SERVICE: 'SERVICE',
   INPUT_CPF: 'INPUT_CPF',
   INPUT_CNPJ: 'INPUT_CNPJ',
-  SEND_TO_PRINTER: 'SEND_TO_PRINTER'
+  SEND_TO_PRINTER: 'SEND_TO_PRINTER',
+  ABORT: 'ABORT'
 })
 
 export const PaymentMethod = Object.freeze({

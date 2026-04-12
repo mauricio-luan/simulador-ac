@@ -38,6 +38,7 @@
         variant="text"
         color="error"
         prepend-icon="mdi-close"
+        :disabled="handleClick"
         @click="abort()"
       >
         Abortar
@@ -47,7 +48,7 @@
 </template>
 
 <script>
-import { definePaymentType } from '../services/service'
+import { definePaymentType, handleAbort } from '../services/service'
 import PaymentMethods from './PaymentMethods.vue'
 import { mapGetters } from 'vuex'
 import {
@@ -66,6 +67,7 @@ export default {
       isOpen: false,
       isLoading: false,
       payload: null,
+      handleClick: false,
       buttons: [
         {
           label: '1 - Debito',
@@ -115,7 +117,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['valorTotalNoCarrinho', 'carrinhoEstaVazio']),
+    ...mapGetters([
+      'valorTotalNoCarrinho',
+      'carrinhoEstaVazio',
+      'integrationMode'
+    ]),
     currentButtons() {
       return this.payload && this.payload.subtypes
         ? this.payload.subtypes
@@ -142,7 +148,7 @@ export default {
         }
 
         const data = await definePaymentType({
-          value: this.valorTotalNoCarrinho,
+          value: this.valorTotalNoCarrinho.toFixed(2),
           paymentMethod: payload.method,
           paymentType: payload.type,
           paymentMethodSubType: payload.subType
@@ -162,15 +168,20 @@ export default {
       this.isLoading = false
     },
     async abort() {
+      if (this.handleClick) return
+      this.handleClick = true
+
       window.api.log.info('[APP] -> Solicitado comando de abort')
       try {
-        const response = await window.api.payment.abort()
+        const response = await handleAbort()
         if (response) {
           window.api.log.info('[APP] -> Transação abortada com sucesso')
           this.clean()
         }
       } catch (error) {
         window.api.log.error(`[APP] -> Erro ao abortar pagamento: ${error.message}`)
+      } finally {
+        this.handleClick = false
       }
     }
   }
