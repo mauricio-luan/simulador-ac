@@ -99,3 +99,40 @@ export const Flow = Object.freeze({
   SYNC: 'SYNC',
   ASYNC: 'ASYNC'
 })
+
+export const dialExtPaymentTypeOptions = Object.freeze({
+  CARD: '1',
+  CASH: '2',
+  DIGITAL_WALLET: '8'
+})
+
+export const dialExtCardTypes = Object.freeze({
+  ANY: '0',
+  CREDIT: '1',
+  DEBIT: '2',
+  VOUCHER: '3'
+})
+
+export const dialExtFinanceTypes = Object.freeze({
+  ANY: '0',
+  CASH: '1',
+  ADMIN_CREDIT: '2',
+  SHOPKEEPER_CREDIT: '3',
+  PREDATED: '4',
+  FORCED_PREDATED: '5'
+})
+export const dialExtOperations = Object.freeze({
+  CRT: 'CRT',
+  CNC: 'CNC'
+})
+
+export const dialTransactionTypes = Object.freeze({
+  CREDIT_FULL_PAYMENT: '10',
+  CREDIT_FINANCED_NO_FEES: '11',
+  CREDIT_FINANCED_WITH_FEES: '12',
+  DEBIT_FULL_PAYMENT: '20',
+  PREDATED_DEBIT: '21',
+  FINANCED_DEBIT: '22',
+  PIX: '26',
+  VOUCHER: '60'
+})

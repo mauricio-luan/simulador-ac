@@ -3,7 +3,7 @@
   "editor.fontFamily": "Cascadia Code",
   "editor.fontSize": 15,
   "terminal.integrated.fontFamily": "Cascadia Code",
-  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.fontSize": 12,
   "workbench.panel.defaultLocation": "right",
   "editor.minimap.autohide": "mouseover",
   "editor.codeActionsOnSave": {
