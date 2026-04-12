@@ -3,9 +3,17 @@ import { createLogger, format, transports } from 'winston'
 import { resolve } from 'path'
 import { resourcesPath } from 'process'
 
-const logFile = is.dev
-  ? resolve('src/app.log')
-  : resolve(resourcesPath, '../app.log')
+const today = new Date()
+const date = {
+  year: today.getFullYear(),
+  month: today.getMonth(),
+  day: today.getDate()
+}
+
+const logName = `simulador-ac-${date.year}-${date.month + 1}-${date.day}.log`
+const logPath = is.dev
+  ? resolve(`src/logs/${logName}`)
+  : resolve(resourcesPath, `..logs/${logName}`)
 
 const timestamp = format.timestamp({ format: 'DD-MM-YYYY HH:mm:ss.SS' })
 const metadata = format.metadata({
@@ -24,7 +32,7 @@ const defaultLogger = format.printf((info) => {
 export const logger = createLogger({
   format: format.combine(timestamp, metadata, defaultLogger),
   transports: [
-    new transports.File({ filename: logFile }),
+    new transports.File({ filename: logPath }),
     new transports.Console()
   ]
 })
