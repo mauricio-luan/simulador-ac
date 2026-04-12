@@ -2,7 +2,7 @@ import store from '../store/store'
 import { v4 as uuid } from 'uuid'
 import { CommandType, Type, Flow } from '../../../shared/constants'
 
-export async function definePaymentType(payload) {
+export async function handlePayment(payload) {
   return store.state.integrationMode === 'localhost'
     ? await localhostPayment(payload)
     : await gatewayPayment(payload)

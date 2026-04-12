@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { definePaymentType, handleAbort } from '../services/service'
+import { handlePayment, handleAbort } from '../services/service'
 import PaymentMethods from './PaymentMethods.vue'
 import { mapGetters } from 'vuex'
 import {
@@ -147,7 +147,7 @@ export default {
           throw new Error('Carrinho vazio paizao')
         }
 
-        const data = await definePaymentType({
+        const data = await handlePayment({
           value: this.valorTotalNoCarrinho.toFixed(2),
           paymentMethod: payload.method,
           paymentType: payload.type,
