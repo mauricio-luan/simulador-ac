@@ -73,7 +73,8 @@ export const statusTransaction = Object.freeze({
 
 export const integrationModes = Object.freeze({
   LOCALHOST: 'localhost',
-  GATEWAY: 'gateway'
+  GATEWAY: 'gateway',
+  DIAL: 'dial'
 })
 
 export const apiGatewayPayload = Object.freeze({

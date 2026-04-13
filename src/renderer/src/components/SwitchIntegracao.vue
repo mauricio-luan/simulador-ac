@@ -1,20 +1,21 @@
 <template>
   <v-card
-    class="pa-4 ma-0"
+    class="pa-0 ma-0 h-100 w-100"
+    style="background-color: tomato;"
     flat
   >
-    <label for="integrationMode">Modo de integração</label>
-    <v-switch
-      id="integrationMode"
+    <v-select
       v-model="mode"
-      :label="mode"
-      :true-value="integrationModes.GATEWAY"
-      :false-value="integrationModes.LOCALHOST"
+      label="Modo de integração"
+      :items="Object.values(integrationModes)"
+      density="compact"
+      variant="outlined"
+      class="mt-2"
     />
     <v-btn
       class="ma-0 pa-0 h-25 w-25"
       color="primary"
-      style="position: absolute; top: 100px; right: 16px"
+      style="position: absolute; top: 60px; right: 16px"
       @click="isOpen = true"
     >
       <v-icon left>

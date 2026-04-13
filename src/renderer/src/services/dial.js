@@ -15,12 +15,14 @@ export function parseTefDial({
   paymentType,
   paymentMethodSubType
 }) {
-  const formattedValue = value.toString().replace(/[.,]/g, '')
-
   const payload = new Object()
 
-  payload.command = dialExtOperations.CRT
+  const formattedValue = value.toString().replace(/[.,]/g, '')
+
   payload.value = formattedValue
+  payload.command = dialExtOperations.CRT
+  payload.correlationId = uuid()
+  payload.socialReason = 'Simulador AC'
 
   switch (paymentMethod) {
     case PaymentMethod.CARD:
@@ -67,15 +69,17 @@ export function parseTefDial({
     }
   }
 
-  return `
-000-000 = ${payload.command}
-001-000 = ${uuid()}
-003-000 = ${payload.value}
-004-000 = 0
-716-000 = Simulador AC
-731-000 = ${payload.paymentType}
-732-000 = ${payload.paymentMethodSubType ?? ''}
-749-000 = ${payload.paymentMethod}
-999-999 = 0
-`
+  return payload
 }
+//   return `
+// 000-000 = ${payload.command}
+// 001-000 = ${payload.correlationId}
+// 003-000 = ${payload.value}
+// 004-000 = 0
+// 716-000 = ${payload.socialReason}
+// 731-000 = ${payload.paymentType}
+// 732-000 = ${payload.paymentMethodSubType ?? ''}
+// 749-000 = ${payload.paymentMethod}
+// 999-999 = 0
+// `
+// }

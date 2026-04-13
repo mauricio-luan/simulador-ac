@@ -35,7 +35,9 @@ export function registerIPC() {
     try {
       return await localhostPayment(payload)
     } catch (error) {
-      logger.error(`[IPC] Erro em 'payment:localhost': ${error.message}`)
+      logger.error(
+        `[IPC] Erro em 'payment:localhost': ${error.message || error}`
+      )
       throw error
     }
   })
