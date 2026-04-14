@@ -5,7 +5,8 @@ const payment = {
   apiStatus: () => ipcRenderer.invoke('api-status'),
   getToken: () => ipcRenderer.invoke('payment:get-gateway-token'),
   gateway: (payload) => ipcRenderer.invoke('payment:gateway', payload),
-  localhost: (payload) => ipcRenderer.invoke('payment:localhost', payload)
+  localhost: (payload) => ipcRenderer.invoke('payment:localhost', payload),
+  dial: (payload) => ipcRenderer.invoke('payment:dial', payload)
 }
 
 const log = {

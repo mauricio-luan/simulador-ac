@@ -9,12 +9,14 @@ import {
   PaymentMethodSubType
 } from '../../../shared/constants'
 
-export function parseTefDial({
+export function parseTefDial(
   value,
   paymentMethod,
   paymentType,
   paymentMethodSubType
-}) {
+) {
+  //debug, apagar depois
+  window.api.log.info(value, paymentMethod, paymentMethod, paymentMethodSubType)
   const payload = new Object()
 
   const formattedValue = value.toString().replace(/[.,]/g, '')
@@ -67,19 +69,9 @@ export function parseTefDial({
           dialTransactionTypes.CREDIT_FINANCED_WITH_FEES
         break
     }
+  } else {
+    payload.paymentMethodSubType = '1'
   }
 
   return payload
 }
-//   return `
-// 000-000 = ${payload.command}
-// 001-000 = ${payload.correlationId}
-// 003-000 = ${payload.value}
-// 004-000 = 0
-// 716-000 = ${payload.socialReason}
-// 731-000 = ${payload.paymentType}
-// 732-000 = ${payload.paymentMethodSubType ?? ''}
-// 749-000 = ${payload.paymentMethod}
-// 999-999 = 0
-// `
-// }

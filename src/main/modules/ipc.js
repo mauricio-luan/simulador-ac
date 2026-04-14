@@ -5,6 +5,7 @@ import { logger } from './logger'
 import {
   localhostPayment,
   gatewayPayment,
+  dialPayment,
   getTokenApiGateway,
   abortPayment
 } from './services'
@@ -47,6 +48,15 @@ export function registerIPC() {
       return await gatewayPayment(payload)
     } catch (error) {
       logger.error(`[IPC] Erro em 'payment:gateway': ${error.message}`)
+      throw error
+    }
+  })
+
+  ipcMain.handle('payment:dial', async (_, payload) => {
+    try {
+      return await dialPayment(payload)
+    } catch (error) {
+      logger.error(`[IPC] Erro em 'payment:dial': ${error.message}`)
       throw error
     }
   })

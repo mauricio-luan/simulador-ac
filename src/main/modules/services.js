@@ -2,6 +2,8 @@ import axios from 'axios'
 import electronStore from '../../plugins/electron-store'
 import { logger } from './logger'
 import { emitter } from './server'
+import fs from 'node:fs/promises'
+import path from 'path'
 
 const baseUrl = 'http://localhost:6060/Client'
 
@@ -60,6 +62,24 @@ export function gatewayPayment(payload) {
         reject(err)
       })
   })
+}
+
+export async function dialPayment(payload) {
+  const reqPath = path.join('C:', 'TEF_Dial', 'REQ')
+
+  try {
+    const files = await fs.readdir(reqPath)
+    if (files.length > 0) {
+      files.forEach(async (file) => await fs.rm(file))
+    }
+
+    await fs.writeFile(path.join(reqPath, 'intpos.001'), payload, {
+      encoding: 'utf-8'
+    })
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
 }
 
 export async function abortPayment() {
