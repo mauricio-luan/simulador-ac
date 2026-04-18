@@ -1,0 +1,35 @@
+:root {
+  --border-white: #e5e5e5;
+  --border-gray: #a9a9a9;
+  --box-background-disable: #d8d8d8;
+}
+
+@font-face {
+  font-family: 'W95FA';
+  src:
+    url(fonts/w95fa.woff) format('woff'),
+    url(fonts/w95fa.woff2) format('woff2');
+}
+
+body {
+  font-family: 'W95FA', sans-serif !important;
+  color: black;
+}
+
+.text-primary {
+  color: black;
+}
+
+.text-secondary {
+  color: white;
+}
+
+.box {
+  color: black;
+  border: 1.5px solid;
+  border-right-color: var(--border-gray);
+  border-bottom-color: var(--border-gray);
+  border-top-color: var(--border-white);
+  border-left-color: var(--border-white);
+  box-shadow: 1.5px 1.5px 0 black;
+}
