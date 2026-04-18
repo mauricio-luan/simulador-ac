@@ -1,18 +1,16 @@
 <template>
-  <div
-    class="pa-0 ma-0"
+  <v-btn
+    flat
+    tile
+    :disabled="disabled"
+    :ripple="false"
+    class="box"
+    @click="$emit('click', $event)"
   >
-    <v-btn
-      flat
-      tile
-      :disabled="disable"
-      :ripple="false"
-      color="primary"
-      class="box"
-    >
-      {{ content }}
-    </v-btn>
-  </div>
+    <slot name="icon" />
+
+    {{ content }}
+  </v-btn>
 </template>
 
 <script>
@@ -21,8 +19,10 @@ export default {
 
   props: {
     content: String,
-    disable: Boolean
-  }
+    disabled: Boolean,
+  },
+
+  emits: ['click']
 }
 </script>
 
@@ -31,15 +31,18 @@ export default {
   border-top-color: black;
   border-left-color: black;
   box-shadow: inset 1.5px 1.5px 0 var(--border-gray);
-  background-color: var(--box-background-disable);
+  background-color: var(--border-gray);
   border-right-color: var(--border-white);
   border-bottom-color: var(--border-white);
-  margin: 1px 0 0 1px;
+  margin: 2px 0 0 2px;
 }
 
 .box.v-btn--disabled {
-  color: #818181 !important;
-  background-color: var(--box-background-disable);
+  color: var(--border-gray) !important;
   border: none;
+}
+
+.v-btn {
+  padding: 8px;
 }
 </style>

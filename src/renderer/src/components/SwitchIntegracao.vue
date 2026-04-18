@@ -1,36 +1,28 @@
 <template>
-  <v-card
-    class="pa-0 ma-0 h-100 w-100"
-    style="background-color: tomato;"
-    flat
+  <v-select
+    v-model="mode"
+    label="Modo de integração"
+    :items="Object.values(integrationModes)"
+    density="compact"
+    variant="outlined"
+    class="mt-2"
+  />
+
+  <AppButton
+    @click="isOpen = true"
   >
-    <v-select
-      v-model="mode"
-      label="Modo de integração"
-      :items="Object.values(integrationModes)"
-      density="compact"
-      variant="outlined"
-      class="mt-2"
-    />
-    <v-btn
-      class="ma-0 pa-0 h-25 w-25"
-      color="primary"
-      style="position: absolute; top: 60px; right: 16px"
-      @click="isOpen = true"
-    >
-      <v-icon left>
-        mdi-cog
-      </v-icon>
-    </v-btn>
-  </v-card>
+    <template #icon>
+      <v-icon>mdi-cog</v-icon>
+    </template>
+  </AppButton>
 
   <v-dialog
     v-model="isOpen"
     width="400"
   >
     <v-form>
-      <v-card>
-        <v-card-title class="text-h5 d-flex justify-center">
+      <v-card class="box">
+        <v-card-title class="d-flex justify-center">
           Configuração Terminal
         </v-card-title>
 
@@ -44,18 +36,15 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-btn
-            color="success"
+          <AppButton
+            :content="'Atualizar'"
             @click="atualizarConfig"
-          >
-            Atualizar
-          </v-btn>
-          <v-btn
-            color="primary"
+          />
+
+          <AppButton
+            :content="'Cancelar'"
             @click="isOpen = false"
-          >
-            Cancelar
-          </v-btn>
+          />
         </v-card-actions>
       </v-card>
     </v-form>
@@ -65,8 +54,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import { integrationModes } from '@shared/constants'
+import AppButton from './Button.vue';
 
 export default {
+  components: {
+    AppButton
+  },
+
   data() {
     return {
       integrationModes,

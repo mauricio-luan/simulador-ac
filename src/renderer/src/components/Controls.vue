@@ -1,16 +1,25 @@
 <template>
-  <v-btn
-    :disabled="carrinhoEstaVazio"
-    @click="$store.dispatch('limpaCarrinho')"
-  >
-    Limpar carrinho
-  </v-btn>
-  <v-btn
-    :disabled="carrinhoEstaVazio"
-    @click="isOpen = true"
-  >
-    Pagar
-  </v-btn>
+  <v-row no-gutters>
+    <v-col
+      class="pa-0 ma-0 d-flex"
+    >
+      <v-col cols="auto">
+        <AppButton
+          :disabled="carrinhoEstaVazio"
+          :content="'Limpar carrinho'"
+          @click="$store.dispatch('limpaCarrinho')"
+        />
+      </v-col>
+
+      <v-col cols="auto">
+        <AppButton
+          :disabled="carrinhoEstaVazio"
+          :content="'Pagar'"
+          @click="isOpen = true"
+        />
+      </v-col>
+    </v-col>
+  </v-row>
 
   <v-dialog
     v-model="isOpen"
@@ -34,15 +43,16 @@
         color="orange"
         indeterminate
       />
-      <v-btn
-        variant="text"
-        color="error"
-        prepend-icon="mdi-close"
+
+      <AppButton
+        :content="'Abortar'"
         :disabled="handleClick"
         @click="abort()"
       >
-        Abortar
-      </v-btn>
+        <template #icon>
+          <v-icon>mdi-close</v-icon>
+        </template>
+      </AppButton>
     </v-card>
   </v-dialog>
 </template>
@@ -50,6 +60,7 @@
 <script>
 import { handlePayment, handleAbort } from '../services/service'
 import PaymentMethods from './PaymentMethods.vue'
+import AppButton from './Button.vue'
 import { mapGetters } from 'vuex'
 import {
   PaymentMethod,
@@ -59,7 +70,8 @@ import {
 
 export default {
   components: {
-    PaymentMethods
+    PaymentMethods,
+    AppButton
   },
 
   data() {

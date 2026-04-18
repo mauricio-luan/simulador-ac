@@ -68,4 +68,8 @@ export default {
 #logShell {
   overflow-y: auto;
 }
+
+code {
+  font-family: 'W95FA';
+}
 </style>

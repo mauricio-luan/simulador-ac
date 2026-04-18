@@ -1,6 +1,6 @@
 <template>
   <v-table
-    class="border-thin"
+    class="box border-thin"
     height="250"
     striped="odd"
     fixed-header
@@ -27,20 +27,21 @@
         <td>R$ {{ p.valorUnitario.toFixed(2) }}</td>
         <td>{{ p.quantidade }}</td>
         <td>
-          <v-btn
-            class="cursor-pointer mr-2"
-            color="error"
-            icon="mdi-trash-can"
-            density="comfortable"
+          <AppButton
             @click="$store.dispatch('removerDoCarrinho', p.id)"
-          />
-          <v-btn
-            class="cursor-pointer"
-            color="primary"
-            icon="mdi-minus"
-            density="comfortable"
+          >
+            <template #icon>
+              <v-icon>mdi-trash-can</v-icon>
+            </template>
+          </AppButton>
+
+          <AppButton
             @click="$store.dispatch('decrementaProduto', p.id)"
-          />
+          >
+            <template #icon>
+              <v-icon>mdi-minus</v-icon>
+            </template>
+          </AppButton>
         </td>
       </tr>
     </tbody>
@@ -48,7 +49,14 @@
 </template>
 
 <script>
+import AppButton from './Button.vue';
+
+
 export default {
+  components: {
+    AppButton
+  },
+
   data() {
     return {
       labels: ['Id', 'Produto', 'Valor', 'QTD', 'Ação']

@@ -16,19 +16,17 @@
         >
           {{ apiStatusProperties.icon }}
         </v-icon>
-        <span
-          class="text-caption"
-        >
+        <span>
           API {{ apiStatusProperties.message }}
         </span>
       </div>
       <div>
-        <span class="text-caption">
-          © 2026 Simulador Automação Comercial Integrada com Sistema Pgto
+        <span>
+          © 2026 Simulador de PDV integrado de pagamentos, via API
         </span>
       </div>
       <div>
-        <span class="text-caption">1.0</span>
+        <span>1.0</span>
       </div>
     </v-row>
   </v-footer>
@@ -61,3 +59,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+span {
+  font-family: 'W95FA', sans-serif;
+  color: white;
+  font-size: small;
+}
+</style>
