@@ -73,9 +73,11 @@ export async function dialPayment(payload) {
       files.forEach(async (file) => await fs.rm(file))
     }
 
-    await fs.writeFile(path.join(reqPath, 'intpos.001'), payload, {
+    await fs.writeFile(path.join(reqPath, 'IntPos.001'), payload, {
       encoding: 'utf-8'
     })
+
+    return `tois`
   } catch (error) {
     console.error(error)
     throw error

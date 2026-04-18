@@ -16,7 +16,9 @@ export function parseTefDial(
   paymentMethodSubType
 ) {
   //debug, apagar depois
-  window.api.log.info(value, paymentMethod, paymentMethod, paymentMethodSubType)
+  window.api.log.info(
+    `value: ${value}, paymentMethod: ${paymentMethod}, paymentType: ${paymentType}, paymentMethodSubType: ${paymentMethodSubType}`
+  )
   const payload = new Object()
 
   const formattedValue = value.toString().replace(/[.,]/g, '')
@@ -40,7 +42,11 @@ export function parseTefDial(
       payload.paymentType = dialExtCardTypes.CREDIT
       break
     case PaymentType.DEBIT:
-      payload.paymentType = dialExtCardTypes.DEBIT
+      if (payload.paymentMethod === dialExtPaymentTypeOptions.DIGITAL_WALLET) {
+        payload.paymentType = dialExtCardTypes.ANY
+      } else {
+        payload.paymentType = dialExtCardTypes.DEBIT
+      }
       break
   }
 
