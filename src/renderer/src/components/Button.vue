@@ -43,6 +43,6 @@ export default {
 }
 
 .v-btn {
-  padding: 8px;
+  padding: 6px;
 }
 </style>

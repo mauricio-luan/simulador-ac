@@ -14,6 +14,7 @@ export function createWindow() {
     show: false,
     center: true,
     title: 'Simulador AC',
+    autoHideMenuBar: true,
     webPreferences: {
       preload: preloadPath,
       sandbox: false

@@ -1,6 +1,6 @@
 <template>
   <v-table
-    class="box border-thin"
+    class="box hover border-thin"
     height="250"
     striped="odd"
     fixed-header
@@ -27,21 +27,26 @@
         <td>R$ {{ p.valorUnitario.toFixed(2) }}</td>
         <td>{{ p.quantidade }}</td>
         <td>
-          <AppButton
-            @click="$store.dispatch('removerDoCarrinho', p.id)"
+          <v-col
+            class="d-flex ma-0 pa-0"
+            style="gap: 8px;"
           >
-            <template #icon>
-              <v-icon>mdi-trash-can</v-icon>
-            </template>
-          </AppButton>
+            <AppButton
+              @click="$store.dispatch('removerDoCarrinho', p.id)"
+            >
+              <template #icon>
+                <v-icon>mdi-trash-can</v-icon>
+              </template>
+            </AppButton>
 
-          <AppButton
-            @click="$store.dispatch('decrementaProduto', p.id)"
-          >
-            <template #icon>
-              <v-icon>mdi-minus</v-icon>
-            </template>
-          </AppButton>
+            <AppButton
+              @click="$store.dispatch('decrementaProduto', p.id)"
+            >
+              <template #icon>
+                <v-icon>mdi-minus</v-icon>
+              </template>
+            </AppButton>
+          </v-col>
         </td>
       </tr>
     </tbody>
@@ -69,3 +74,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.hover tbody tr:hover {
+  color: white !important;
+  background-color: #000ea3 !important;
+}
+</style>

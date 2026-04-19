@@ -1,9 +1,13 @@
 <template>
   <v-row no-gutters>
     <v-col
-      class="pa-0 ma-0 d-flex"
+      class="d-flex"
+      style="gap: 16px;"
     >
-      <v-col cols="auto">
+      <v-col
+        cols="auto"
+        class="ma-0 pa-0"
+      >
         <AppButton
           :disabled="carrinhoEstaVazio"
           :content="'Limpar carrinho'"
@@ -11,7 +15,10 @@
         />
       </v-col>
 
-      <v-col cols="auto">
+      <v-col
+        cols="auto"
+        class="ma-0 pa-0"
+      >
         <AppButton
           :disabled="carrinhoEstaVazio"
           :content="'Pagar'"

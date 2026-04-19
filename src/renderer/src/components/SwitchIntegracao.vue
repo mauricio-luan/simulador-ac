@@ -1,20 +1,25 @@
 <template>
-  <v-select
-    v-model="mode"
-    label="Modo de integração"
-    :items="Object.values(integrationModes)"
-    density="compact"
-    variant="outlined"
-    class="mt-2"
-  />
-
-  <AppButton
-    @click="isOpen = true"
+  <v-col
+    cols="12"
+    class="d-dlex ma-0 pa-0"
   >
-    <template #icon>
-      <v-icon>mdi-cog</v-icon>
-    </template>
-  </AppButton>
+    <v-select
+      v-model="mode"
+      label="Integração"
+      :items="Object.values(integrationModes)"
+      density="compact"
+      class="mt-2 box"
+    />
+
+    <AppButton
+      class="mt-2"
+      @click="isOpen = true"
+    >
+      <template #icon>
+        <v-icon>mdi-cog</v-icon>
+      </template>
+    </AppButton>
+  </v-col>
 
   <v-dialog
     v-model="isOpen"
@@ -68,7 +73,7 @@ export default {
       isOpen: false,
       form: {},
       fields: [
-        { label: 'Callback URL', model: 'callbackUrl' },
+        { label: 'Callback URL (gateway)', model: 'callbackUrl' },
         { label: 'Automation name', model: 'automationName' },
         { label: 'Company ID', model: 'companyId' },
         { label: 'Store ID', model: 'storeId' },
@@ -101,3 +106,31 @@ export default {
   }
 }
 </script>
+
+<style>
+.v-list-item--active,
+.v-list-item:hover {
+  color: white !important;
+  background-color: #000ea3 !important;
+}
+
+.v-select .v-field {
+  color: black !important;
+  background-color: #c3c3c3 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 auto !important;
+  padding: 0 auto !important;
+}
+
+.v-select .v-input__details {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.v-select .v-field:active {
+  color: white !important;
+  background-color: #000ea3 !important;
+}
+</style>

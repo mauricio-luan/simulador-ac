@@ -1,6 +1,6 @@
 <template>
   <v-table
-    class="box border-thin"
+    class="box hover border-thin"
     height="250"
     striped="odd"
     fixed-header
@@ -62,3 +62,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.hover tbody tr:hover {
+  color: white !important;
+  background-color: #000ea3 !important;
+}
+</style>
